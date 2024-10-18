@@ -3,10 +3,10 @@ import { Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector, useDispatch } from "react-redux"; // Redux hooks
-import { logout } from "../redux/authSlice"; // Redux logout action
+import { logout, loadUserFromSession } from "../redux/Auth/authSlice"; // Redux loginUser va logout
+import { FaUserCircle } from "react-icons/fa";
 import { RootState } from "../redux/store";
 import { Dropdown, Space, type MenuProps } from "antd";
-// import { FaUserCircle } from "react-icons/fa";
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +14,32 @@ const Header = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 
-	// Redux state for authentication and user info
+	// Redux'dan user va isAuthenticated holatini olish
 	const { isAuthenticated, user } = useSelector(
 		(state: RootState) => state.auth
 	);
+
+	// Sahifa yangilanganida token va userni sessionStorage'dan yuklash
+	useEffect(() => {
+		const token = sessionStorage.getItem("token");
+		const username = sessionStorage.getItem("username");
+		const profilePic = sessionStorage.getItem("profilePic");
+
+		if (token && username) {
+			dispatch(
+				loadUserFromSession({
+					username,
+					profilePic, // Profil rasmini ham sessionStorage yoki default rasm
+				})
+			);
+		}
+	}, [dispatch]);
+	const handleLogout = () => {
+		dispatch(logout()); // Redux'dan logout chaqirish
+		sessionStorage.removeItem("token");
+		sessionStorage.removeItem("username");
+		sessionStorage.removeItem("profilePic");
+	};
 
 	const toggleMenu = () => {
 		setIsOpen(!isOpen);
@@ -51,12 +73,6 @@ const Header = () => {
 	if (shouldHideHeaderFooter) {
 		return null; // Don't render Header
 	}
-
-	// Handle logout
-	const handleLogout = () => {
-		dispatch(logout()); // Dispatch the logout action
-		localStorage.removeItem("token"); // Clear token from local storage
-	};
 
 	// Profile menu items
 	const items: MenuProps["items"] = [
@@ -134,12 +150,16 @@ const Header = () => {
 							>
 								<Space>
 									<div className="hidden md:flex items-center gap-2">
-										<img
-											src={user.profilePic || "/couple.jpg"}
-											alt="Profile"
-											className="w-[45px] h-[45px] rounded-full"
-										/>
-										{/* <FaUserCircle className="text-[42px]" /> */}
+										{user.profilePic ? (
+											<img
+												src={user?.profilePic}
+												alt="Profile"
+												className="w-[45px] h-[45px] rounded-full"
+											/>
+										) : (
+											<FaUserCircle className="text-[38px]" />
+										)}
+
 										<span
 											className={`text-[18px] font-bold ${
 												isScrolled ? "text-white" : ""
@@ -206,17 +226,21 @@ const Header = () => {
 								>
 									<Space>
 										<div className="hidden md:flex items-center gap-2">
-											<img
-												src={user.profilePic || "/couple.jpg"}
-												alt="Profile"
-												className="w-[45px] h-[45px] rounded-full"
-											/>
+											{user.profilePic ? (
+												<img
+													src={user?.profilePic}
+													alt="Profile"
+													className="w-[45px] h-[45px] rounded-full"
+												/>
+											) : (
+												<FaUserCircle className="text-[38px]" />
+											)}
 											<span
 												className={`text-[18px] font-bold ${
 													isScrolled ? "text-white" : ""
 												}`}
 											>
-												{user.username}
+												{user.username || "Username"}
 											</span>
 										</div>
 									</Space>
@@ -243,11 +267,15 @@ const Header = () => {
 
 						<ul className="flex flex-col gap-4 text-[18px] font-black">
 							<li className="flex items-center gap-2">
-								<img
-									src={user.profilePic || "/couple.jpg"}
-									alt="Profile"
-									className="w-[45px] h-[45px] rounded-full"
-								/>
+								{user.profilePic ? (
+									<img
+										src={user?.profilePic}
+										alt="Profile"
+										className="w-[45px] h-[45px] rounded-full"
+									/>
+								) : (
+									<FaUserCircle className="text-[38px]" />
+								)}
 								<span
 									className={`text-[18px] font-bold ${
 										isScrolled ? "text-white" : ""

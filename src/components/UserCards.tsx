@@ -5,17 +5,14 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { FaHeart, FaRegHeart, FaComment, FaCamera } from "react-icons/fa";
-import axios from "axios";
-
-interface UserData {
-	data: {
-		firstName: string;
-		lastName?: string;
-	};
-}
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { fetchUserData } from "../redux/User/userSlice";
 
 const UserCards = () => {
-	const [data, setData] = useState<UserData | null>(null);
+	const dispatch = useDispatch<AppDispatch>();
+	const { data } = useSelector((state: RootState) => state.user);
+	const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 	const [liked, setLiked] = useState(false);
 	const [showPhotos, setShowPhotos] = useState(false);
 	const [comments, setComments] = useState<string[]>([]);
@@ -59,30 +56,11 @@ const UserCards = () => {
 		setShowCommentsModal(!showCommentsModal);
 	};
 
-	const getMatchData = async () => {
-		const token =
-			"eyJhbGciOiJIUzI1NiJ9.eyJpcCI6IjE4NS4yMTMuMjI5LjQ0Iiwic3ViIjoic2hhaGJvem5hYml5ZXY4NjQ5QGdtYWlsLmNvbSIsImlhdCI6MTcyOTEwMDIyOCwiZXhwIjoxNzI5MTQzNDI4fQ.dA1cJk4vWxrzXVpVWfFx8eVihjEUCn7o0QZSI3YWHzA";
-		try {
-			const url = `http://13.50.240.41:8080/datingapp/api/v1/user_info/get/user_profile`;
-
-			const res = await axios.get(url, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
-				},
-			});
-
-			const data = await res.data;
-			setData(data);
-			console.log(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	useEffect(() => {
-		getMatchData();
-	}, []); // Empty array ensures this effect only runs once on mount
+		if (isAuthenticated) {
+			dispatch(fetchUserData()); // Redux orqali user ma'lumotlarini olish
+		}
+	}, [dispatch, isAuthenticated]);
 
 	return (
 		<div
@@ -107,9 +85,13 @@ const UserCards = () => {
 						alt="User"
 						className="w-12 h-12 rounded-full object-cover"
 					/>
-					<h3 className="text-lg font-bold text-yellow-600">
-						{`${data?.data?.firstName} ${data?.data?.lastName}`}
-					</h3>
+					{isAuthenticated ? (
+						<h3 className="text-lg font-bold text-yellow-600">
+							{`${data?.data?.firstName} ${data?.data?.lastName}`}
+						</h3>
+					) : (
+						<span className="text-white font-bold">Login to see username</span>
+					)}
 				</div>
 
 				<div className=" mt-3">

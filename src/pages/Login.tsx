@@ -1,54 +1,22 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios"; // Axios import qilindi
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/Auth/authSlice";
+import { AppDispatch, RootState } from "../redux/store";
 
 const Login = () => {
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
 	const navigate = useNavigate();
+	const { loading, error, isAuthenticated } = useSelector(
+		(state: RootState) => state.auth
+	);
+	const dispatch = useDispatch<AppDispatch>();; // Redux dispatch
 
-	const onFinish = async (values: any) => {
-		console.log("Received values of form: ", values);
-		setLoading(true);
-		setError(""); // Xato xabarni o'chirish
+	const onFinish = (values: any) => {
+		dispatch(loginUser(values)); // Redux orqali API so'rovini chaqirish
 
-		try {
-			// API ga POST so'rovni axios bilan jo'natish
-			const response = await axios.post(
-				"http://13.50.240.41:8080/datingapp/api/v1/auth/authenticate",
-				{
-					username: values.username,
-					password: values.password,
-				}
-			);
-
-			console.log(response);
-
-			if (response.status === 200) {
-				const data = response.data;
-				console.log("Server Response:", data);
-
-				// Tokenni localStorage ga saqlash
-				localStorage.setItem("token", data.data.token);
-				localStorage.setItem("username", data.data.username);
-
-				// Home sahifasiga o'tkazish
-				navigate("/");
-			}
-		} catch (error: any) {
-			if (error.response && error.response.status === 403) {
-				setError(
-					"Forbidden: You do not have permission to access this resource."
-				);
-			} else {
-				setError("Invalid credentials. Please try again.");
-			}
-		} finally {
-			setLoading(false); // Yuklanishni to'xtatish
-			toast.success("Successfully logged in!")
+		if (isAuthenticated) {
+			navigate("/"); // Agar foydalanuvchi muvaffaqiyatli login qilgan bo'lsa, home sahifasiga o'tkazish
 		}
 	};
 
@@ -57,7 +25,7 @@ const Login = () => {
 			<Form
 				name="login"
 				initialValues={{ remember: true }}
-				style={{ maxWidth: 300, width:"100%" }}
+				style={{ maxWidth: 300, width: "100%" }}
 				onFinish={onFinish}
 			>
 				<h2 className="text-center text-2xl mb-4 text-white">Login</h2>
@@ -96,7 +64,12 @@ const Login = () => {
 						>
 							<Checkbox className="text-white">Remember me</Checkbox>
 						</Form.Item>
-						<a href="/forgot-password" className="text-white">Forgot password?</a>
+						<a
+							href="/forgot-password"
+							className="text-white"
+						>
+							Forgot password?
+						</a>
 					</Flex>
 				</Form.Item>
 
