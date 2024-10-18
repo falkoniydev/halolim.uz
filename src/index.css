@@ -1,0 +1,27 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@font-face {
+	font-family: Poppins;
+	src: url("./assets/fonts/Poppins-Regular.ttf");
+}
+
+body {
+	font-family: Poppins;
+	background-image: url("./hero.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+.container {
+	max-width: 1440px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+/* .hero {
+	height: 500px;
+} */
