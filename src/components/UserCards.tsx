@@ -20,11 +20,11 @@ const UserCards = () => {
 	const [showCommentsModal, setShowCommentsModal] = useState(false);
 
 	const photos = [
-		"/images/photo1.jpg",
-		"/images/photo2.jpg",
-		"/images/photo3.jpg",
-		"/images/photo4.jpg",
-		"/images/photo5.jpg",
+		"/bg-hero1.jpg",
+		"/bg-hero2.png",
+		"/bg-login.webp",
+		"/bg-hero3.avif",
+		"/profile-card-bg.avif",
 	];
 
 	const toggleLike = () => {

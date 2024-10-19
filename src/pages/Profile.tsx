@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { FaEdit, FaCamera } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Profile = () => {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	// Redux state'dan user ma'lumotlarini olish
 	const { firstName, lastName } = useSelector(
 		(state: RootState) => state.user.data
@@ -23,7 +23,7 @@ const Profile = () => {
 
 	return (
 		<>
-			{isAuthenticated ? (
+			{isAuthenticated && (
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
@@ -127,8 +127,6 @@ const Profile = () => {
 						</div>
 					</div>
 				</motion.div>
-			) : (
-				navigate("/")
 			)}
 		</>
 	);

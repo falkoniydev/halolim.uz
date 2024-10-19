@@ -7,13 +7,9 @@
 	src: url("./assets/fonts/Poppins-Regular.ttf");
 }
 
-body {
-	font-family: Poppins;
-	background-image: url("./bg-hero3.avif");
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-attachment: fixed;
-}
+/* body {
+	
+} */
 
 .container {
 	max-width: 1440px;
