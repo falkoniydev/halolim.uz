@@ -1,65 +1,194 @@
+import React, { useState } from "react";
+import {
+	FaSearch,
+	FaHeart,
+	FaRegHeart,
+	FaCamera,
+	FaComment,
+} from "react-icons/fa";
+import { motion } from "framer-motion";
+
+// Dummy user data
+const users = [
+	{
+		id: 1,
+		firstName: "Alice",
+		lastName: "Johnson",
+		age: 25,
+		gender: "Female",
+		location: "New York",
+		profilePic: "/images/photo1.jpg",
+	},
+	{
+		id: 2,
+		firstName: "Bob",
+		lastName: "Smith",
+		age: 30,
+		gender: "Male",
+		location: "San Francisco",
+		profilePic: "/images/photo2.jpg",
+	},
+	{
+		id: 3,
+		firstName: "Charlie",
+		lastName: "Brown",
+		age: 28,
+		gender: "Male",
+		location: "Chicago",
+		profilePic: "/images/photo3.jpg",
+	},
+	{
+		id: 4,
+		firstName: "Diana",
+		lastName: "Prince",
+		age: 22,
+		gender: "Female",
+		location: "Los Angeles",
+		profilePic: "/images/photo4.jpg",
+	},
+];
+
 const Search = () => {
+	const [searchTerm, setSearchTerm] = useState("");
+	const [ageRange, setAgeRange] = useState<[number, number]>([18, 50]);
+	const [gender, setGender] = useState<string>("All");
+
+	const [liked, setLiked] = useState(false);
+
+	const toggleLike = () => {
+		setLiked(!liked);
+	};
+
+	const filteredUsers = users.filter((user) => {
+		const matchesSearch =
+			user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			user.lastName.toLowerCase().includes(searchTerm.toLowerCase());
+		const matchesAge = user.age >= ageRange[0] && user.age <= ageRange[1];
+		const matchesGender = gender === "All" || user.gender === gender;
+
+		return matchesSearch && matchesAge && matchesGender;
+	});
+
 	return (
-		<div className="container">
-			<h1>Search</h1>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-				deserunt placeat saepe corrupti alias, qui asperiores quisquam officiis
-				dolor exercitationem eius consequuntur officia, autem rerum tenetur
-				voluptatibus magnam. Modi saepe enim, sunt minus mollitia quibusdam
-				suscipit illum reiciendis ipsa deleniti. Pariatur reiciendis excepturi
-				debitis aperiam rerum voluptatem eius, autem at perspiciatis. Quisquam
-				nihil voluptatum incidunt. Porro vel veniam quas quam, voluptatibus
-				necessitatibus repudiandae ab magnam quaerat libero inventore nesciunt
-				et non eos dignissimos neque odio, nostrum nemo sed. Eveniet dolores
-				autem animi vitae tempora praesentium voluptates molestias beatae
-				eligendi inventore mollitia facilis sequi minima exercitationem ab
-				nesciunt quas placeat odio cupiditate, iure amet fugiat tenetur in. Ut
-				minima impedit voluptatibus deleniti sit explicabo a iure aliquam, nobis
-				eum necessitatibus modi saepe! Cum dignissimos atque excepturi inventore
-				ullam dolorum consectetur accusamus, nam quae amet sit minima quidem
-				fuga provident. Inventore voluptate ipsam assumenda rerum consectetur
-				aut quis nisi quia dolor! Molestias, dignissimos reiciendis rerum
-				pariatur cumque doloribus labore blanditiis nam fugiat, doloremque
-				recusandae voluptate atque eligendi. Incidunt distinctio sunt a fuga vel
-				consectetur perspiciatis? Modi quam maxime neque minima facere repellat
-				laboriosam adipisci natus, obcaecati eaque vero dolorum, dicta alias, ex
-				perferendis! Nam assumenda aperiam accusamus corporis dignissimos
-				aspernatur omnis iste! Quisquam deserunt, doloremque tempora natus amet
-				debitis rem suscipit quo nostrum similique id molestias repellat
-				accusantium! Laborum dicta explicabo, ea natus consectetur placeat
-				reprehenderit minima repellat? Illum a molestiae debitis esse itaque
-				similique earum, provident accusamus voluptas facere, maiores rem et
-				deserunt iure, dolor ex doloribus non? Est cum maiores minima magnam
-				facere provident, saepe enim non architecto earum animi vitae ex magni
-				ad deserunt id. Consectetur vitae accusantium ab unde numquam sequi
-				fugit at soluta provident saepe amet voluptates, a rerum labore totam
-				minus illo fuga quas quam omnis exercitationem dolore veritatis enim
-				laboriosam! Ut porro, atque hic minus iure nulla debitis praesentium
-				omnis facilis repudiandae, rerum iste voluptates totam sit
-				exercitationem eveniet? Totam ipsum minima tempore, nulla explicabo
-				animi id corporis corrupti autem dignissimos? Obcaecati modi eveniet
-				aliquam tempore sint assumenda, quod error est veritatis beatae quo
-				perspiciatis cupiditate vitae, saepe ad possimus amet ipsam
-				necessitatibus expedita, ex laudantium vero quaerat. Quasi cumque
-				debitis assumenda odit delectus fugit natus, tempora quos quidem
-				voluptatibus nisi temporibus voluptatem iste est magni autem unde quo!
-				Velit cupiditate tempora repellendus totam et id eligendi, minus rem
-				vero quam, odit iusto reprehenderit, ex ullam! Nemo deserunt quisquam
-				rerum consequatur placeat maxime soluta ratione doloremque quibusdam
-				beatae eos, odit voluptatibus minima rem voluptates! Alias obcaecati
-				iure aperiam quisquam, debitis earum eaque mollitia, assumenda atque
-				voluptates suscipit dolores dolorum omnis saepe facere minus natus
-				maiores. Deleniti nulla ipsa quibusdam molestiae quasi laborum velit
-				reiciendis laudantium totam, blanditiis fuga vero illum eius sit aperiam
-				debitis sapiente veniam modi necessitatibus eos obcaecati consequuntur.
-				Maiores explicabo necessitatibus voluptas expedita vero nihil vel sint
-				ipsam architecto commodi adipisci exercitationem, molestias voluptatum
-				placeat alias corporis. Voluptas, pariatur suscipit. Numquam soluta non
-				magni aliquam nostrum perspiciatis ut ad minima enim distinctio culpa
-				tempora porro libero, dolore vel hic ipsa nihil id.
-			</p>
-		</div>
+		<motion.div
+			className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-700 text-white p-10"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.8 }}
+		>
+			<h1 className="text-4xl font-bold text-center mb-10">
+				Find Your Match 🔎
+			</h1>
+			<div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg text-gray-800">
+				{/* Search Filters */}
+				<div className="flex items-center justify-between space-x-4 mb-6">
+					<div className="flex-grow">
+						<label className="block text-lg font-semibold mb-2">Search</label>
+						<div className="relative">
+							<input
+								type="text"
+								placeholder="Search by name..."
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+								className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 transition-all"
+							/>
+							<FaSearch className="absolute top-3 right-3 text-gray-400" />
+						</div>
+					</div>
+
+					<div className="flex-shrink-0">
+						<label className="block text-lg font-semibold mb-2">Gender</label>
+						<select
+							value={gender}
+							onChange={(e) => setGender(e.target.value)}
+							className="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 transition-all"
+						>
+							<option value="All">All</option>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
+						</select>
+					</div>
+
+					<div className="flex-shrink-0">
+						<label className="block text-lg font-semibold mb-2">Age</label>
+						<input
+							type="range"
+							min={18}
+							max={50}
+							value={ageRange[1]}
+							onChange={(e) =>
+								setAgeRange([ageRange[0], Number(e.target.value)])
+							}
+							className="w-32 focus:ring-2 focus:ring-purple-500"
+						/>
+						<p className="mt-1 text-sm text-gray-500">
+							{ageRange[0]} - {ageRange[1]} years
+						</p>
+					</div>
+				</div>
+
+				{/* Filtered Users List */}
+				<motion.div
+					className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+					initial={{ y: 20, opacity: 0 }}
+					animate={{ y: 0, opacity: 1 }}
+					transition={{ duration: 0.8, delay: 0.2 }}
+				>
+					{filteredUsers.length > 0 ? (
+						filteredUsers.map((user) => (
+							<motion.div
+								key={user.id}
+								className="bg-slate-900 rounded-lg shadow-lg overflow-hidden transition-all"
+								whileHover={{ scale: 1.05 }}
+							>
+								<div className="h-40">
+									<img
+										src={user.profilePic}
+										alt="User"
+										className="w-full h-full object-cover"
+									/>
+								</div>
+								<div className="p-4">
+									<div className="flex items-center gap-2">
+										<img
+											src={user.profilePic}
+											alt="User Avatar"
+											className="w-12 h-12 rounded-full object-cover"
+										/>
+										<h3 className="text-lg font-bold text-yellow-600">
+											{`${user.firstName} ${user.lastName}`}
+										</h3>
+									</div>
+									<p className="text-white mt-2">Age: {user.age}</p>
+									<p className="text-white">Location: {user.location}</p>
+								</div>
+
+								{/* Buttons with icons */}
+								<div className="flex justify-around border-t p-4">
+									<button onClick={toggleLike}>
+										{liked ? (
+											<FaHeart className="text-red-500 text-2xl" />
+										) : (
+											<FaRegHeart className="text-white text-2xl hover:text-yellow-500 transition-all" />
+										)}
+									</button>
+									<button>
+										<FaComment className="text-white text-2xl hover:text-yellow-500 transition-all" />
+									</button>
+									<button>
+										<FaCamera className="text-white text-2xl hover:text-yellow-500 transition-all" />
+									</button>
+								</div>
+							</motion.div>
+						))
+					) : (
+						<p className="col-span-full text-center text-gray-400">
+							No users found
+						</p>
+					)}
+				</motion.div>
+			</div>
+		</motion.div>
 	);
 };
 

@@ -15,6 +15,7 @@ import {
 import type { InputNumberProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 const onChange: InputNumberProps["onChange"] = (value) => {
 	console.log("changed", value);
@@ -99,7 +100,12 @@ const Register: React.FC = () => {
 	};
 
 	return (
-		<div className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[500px] px-10 ">
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.8 }}
+			className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[500px] px-10 "
+		>
 			<Form
 				{...formItemLayout}
 				form={form}
@@ -287,7 +293,7 @@ const Register: React.FC = () => {
 					if you have already registered, go to Login
 				</Button>
 			</Form>
-		</div>
+		</motion.div>
 	);
 };
 

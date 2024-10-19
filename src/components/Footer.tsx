@@ -26,9 +26,12 @@ const Footer = () => {
 							alt="Logo"
 							className="w-[45px] h-[45px]"
 						/>
-						<span className="text-[20px] font-black text-yellow-500">
-							Halolim
-						</span>
+						<Link
+							to={"/"}
+							className="text-[20px] font-black text-red-500"
+						>
+							Halolim.uz
+						</Link>
 					</div>
 
 					{/* Footer Navigation Links */}
@@ -51,10 +54,10 @@ const Footer = () => {
 									<Link to={"/activity"}>Activity</Link>
 								</li>
 								<li>
-									<Link to={"/activity"}>Terms & Conditions</Link>
+									<Link to={"/terms-and-conditions"}>Terms & Conditions</Link>
 								</li>
 								<li>
-									<Link to={"/activity"}>Privacy Policy</Link>
+									<Link to={"/privacy-policy"}>Privacy Policy</Link>
 								</li>
 							</ul>
 						</nav>

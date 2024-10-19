@@ -1,65 +1,136 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { FaEdit, FaCamera } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
 const Profile = () => {
+	const navigate = useNavigate();
+	// Redux state'dan user ma'lumotlarini olish
+	const { firstName, lastName } = useSelector(
+		(state: RootState) => state.user.data
+	);
+	const { isAuthenticated, user } = useSelector(
+		(state: RootState) => state.auth
+	);
+
+	// console.log(user);
+
+	// const profilePic = useSelector((state: RootState) => state.user);
+	const { data } = useSelector((state: RootState) => state.user);
+
+	// console.log(data);
+
 	return (
-		<div className="container">
-			<h1>Profile</h1>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-				deserunt placeat saepe corrupti alias, qui asperiores quisquam officiis
-				dolor exercitationem eius consequuntur officia, autem rerum tenetur
-				voluptatibus magnam. Modi saepe enim, sunt minus mollitia quibusdam
-				suscipit illum reiciendis ipsa deleniti. Pariatur reiciendis excepturi
-				debitis aperiam rerum voluptatem eius, autem at perspiciatis. Quisquam
-				nihil voluptatum incidunt. Porro vel veniam quas quam, voluptatibus
-				necessitatibus repudiandae ab magnam quaerat libero inventore nesciunt
-				et non eos dignissimos neque odio, nostrum nemo sed. Eveniet dolores
-				autem animi vitae tempora praesentium voluptates molestias beatae
-				eligendi inventore mollitia facilis sequi minima exercitationem ab
-				nesciunt quas placeat odio cupiditate, iure amet fugiat tenetur in. Ut
-				minima impedit voluptatibus deleniti sit explicabo a iure aliquam, nobis
-				eum necessitatibus modi saepe! Cum dignissimos atque excepturi inventore
-				ullam dolorum consectetur accusamus, nam quae amet sit minima quidem
-				fuga provident. Inventore voluptate ipsam assumenda rerum consectetur
-				aut quis nisi quia dolor! Molestias, dignissimos reiciendis rerum
-				pariatur cumque doloribus labore blanditiis nam fugiat, doloremque
-				recusandae voluptate atque eligendi. Incidunt distinctio sunt a fuga vel
-				consectetur perspiciatis? Modi quam maxime neque minima facere repellat
-				laboriosam adipisci natus, obcaecati eaque vero dolorum, dicta alias, ex
-				perferendis! Nam assumenda aperiam accusamus corporis dignissimos
-				aspernatur omnis iste! Quisquam deserunt, doloremque tempora natus amet
-				debitis rem suscipit quo nostrum similique id molestias repellat
-				accusantium! Laborum dicta explicabo, ea natus consectetur placeat
-				reprehenderit minima repellat? Illum a molestiae debitis esse itaque
-				similique earum, provident accusamus voluptas facere, maiores rem et
-				deserunt iure, dolor ex doloribus non? Est cum maiores minima magnam
-				facere provident, saepe enim non architecto earum animi vitae ex magni
-				ad deserunt id. Consectetur vitae accusantium ab unde numquam sequi
-				fugit at soluta provident saepe amet voluptates, a rerum labore totam
-				minus illo fuga quas quam omnis exercitationem dolore veritatis enim
-				laboriosam! Ut porro, atque hic minus iure nulla debitis praesentium
-				omnis facilis repudiandae, rerum iste voluptates totam sit
-				exercitationem eveniet? Totam ipsum minima tempore, nulla explicabo
-				animi id corporis corrupti autem dignissimos? Obcaecati modi eveniet
-				aliquam tempore sint assumenda, quod error est veritatis beatae quo
-				perspiciatis cupiditate vitae, saepe ad possimus amet ipsam
-				necessitatibus expedita, ex laudantium vero quaerat. Quasi cumque
-				debitis assumenda odit delectus fugit natus, tempora quos quidem
-				voluptatibus nisi temporibus voluptatem iste est magni autem unde quo!
-				Velit cupiditate tempora repellendus totam et id eligendi, minus rem
-				vero quam, odit iusto reprehenderit, ex ullam! Nemo deserunt quisquam
-				rerum consequatur placeat maxime soluta ratione doloremque quibusdam
-				beatae eos, odit voluptatibus minima rem voluptates! Alias obcaecati
-				iure aperiam quisquam, debitis earum eaque mollitia, assumenda atque
-				voluptates suscipit dolores dolorum omnis saepe facere minus natus
-				maiores. Deleniti nulla ipsa quibusdam molestiae quasi laborum velit
-				reiciendis laudantium totam, blanditiis fuga vero illum eius sit aperiam
-				debitis sapiente veniam modi necessitatibus eos obcaecati consequuntur.
-				Maiores explicabo necessitatibus voluptas expedita vero nihil vel sint
-				ipsam architecto commodi adipisci exercitationem, molestias voluptatum
-				placeat alias corporis. Voluptas, pariatur suscipit. Numquam soluta non
-				magni aliquam nostrum perspiciatis ut ad minima enim distinctio culpa
-				tempora porro libero, dolore vel hic ipsa nihil id.
-			</p>
-		</div>
+		<>
+			{isAuthenticated ? (
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.8 }}
+					style={{
+						backgroundImage: `url("./bg-hero3.avif")`,
+						backgroundRepeat: "no-repeat",
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+						height: "50vh",
+						display: "flex",
+						justifyContent: "center",
+					}}
+					className="shadow-black min-h-[550px] bg-gradient-to-r from-purple-800 to-pink-600"
+				>
+					<div className=" bg-white bg-opacity-85 shadow-lg rounded-lg overflow-hidden animate-fade-in">
+						<div className="flex">
+							<div className="w-[400px]">
+								<div
+									className="bg-cover bg-center h-full"
+									style={{
+										backgroundImage: `url(${
+											data?.profilePic
+												? data?.profilePic
+												: "/profile-card-bg.avif"
+										})`,
+										backgroundRepeat: "no-repeat",
+										backgroundSize: "cover",
+										width: "400px",
+										height: "550px",
+									}}
+								>
+									<div className="flex justify-end px-4 pt-4">
+										<button className="text-white bg-black bg-opacity-60 hover:bg-opacity-90 p-2 rounded-full transition-all">
+											<FaCamera />
+										</button>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div className="text-center mt-10">
+									<img
+										className="h-32 w-32 rounded-full mx-auto border-4 border-white object-cover shadow-2xl"
+										src={data?.profilePic || "/bg-hero1.jpg"}
+										alt="Profile"
+									/>
+									<h2 className="text-2xl font-bold text-gray-800 mt-2">
+										{firstName} {lastName}
+									</h2>
+									<p className="text-gray-600">{user.username}</p>
+								</div>
+								<div className="px-6 py-4">
+									<h3 className="text-xl font-semibold text-gray-800">
+										Profile Information
+									</h3>
+									<div className="mt-4">
+										<p className="text-gray-700 font-semibold">
+											Firstname:{" "}
+											<span className="text-gray-500">
+												{data?.data?.firstName}
+											</span>
+										</p>
+										<p className="text-gray-700 font-semibold">
+											Lastname:{" "}
+											<span className="text-gray-500">
+												{data?.data?.lastName}
+											</span>
+										</p>
+										<p className="text-gray-700 font-semibold">
+											Username:{" "}
+											<span className="text-gray-500">{user.username}</span>
+										</p>
+										<p className="text-gray-700 font-semibold">
+											Password: <span className="text-gray-500">********</span>
+										</p>
+										<p className="text-gray-700 font-semibold">
+											Age:{" "}
+											<span className="text-gray-500">{data?.data?.age}</span>
+										</p>
+										<p className="text-gray-700 font-semibold">
+											Gender:{" "}
+											<span className="text-gray-500">
+												{data?.data?.gender}
+											</span>
+										</p>
+										<p className="text-gray-700 font-semibold">
+											Birthdate:{" "}
+											<span className="text-gray-500">January 1, 1999</span>
+										</p>
+									</div>
+								</div>
+								<div className="flex justify-around py-4 border-t border-gray-300">
+									<button className="text-purple-600 hover:text-purple-800 font-semibold transition-all">
+										Edit Profile <FaEdit className="inline-block ml-2" />
+									</button>
+									{/* <button className="text-red-600 hover:text-red-800 font-semibold transition-all">
+										Delete Account
+									</button> */}
+								</div>
+							</div>
+						</div>
+					</div>
+				</motion.div>
+			) : (
+				navigate("/")
+			)}
+		</>
 	);
 };
 

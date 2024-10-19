@@ -16,6 +16,9 @@ import Search from "./pages/Search";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgetPassword from "./pages/ForgetPassword";
+import Settings from "./pages/Settings";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 const App = () => {
 	return (
@@ -61,6 +64,18 @@ const App = () => {
 					<Route
 						path="/search"
 						element={<Search />}
+					/>
+					<Route
+						path="/settings"
+						element={<Settings />}
+					/>
+					<Route
+						path="/privacy-policy"
+						element={<PrivacyPolicy />}
+					/>
+					<Route
+						path="/terms-and-conditions"
+						element={<TermsAndConditions />}
 					/>
 					<Route
 						path="*"

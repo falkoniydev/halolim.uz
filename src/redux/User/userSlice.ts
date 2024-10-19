@@ -30,13 +30,21 @@ interface UserData {
 	data: {
 		firstName?: string;
 		lastName?: string;
+		profilePic: string;
+		age: number;
+		gender: string;
 	};
-	firstName: string;
+	firstName?: string;
 	lastName?: string;
+	profilePic: string;
 }
 
 const initialState = {
-	data: {} as UserData | null, // Ma'lumot uchun to'g'ri typingni belgilang
+	data: {
+		firstName: "",
+		lastName: "",
+		profilePic: "",
+	} as UserData,
 	loading: false,
 	error: "",
 };
@@ -46,7 +54,6 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		// extraReducers reducers bilan birga bo'lishi kerak
 		builder
 			.addCase(fetchUserData.pending, (state) => {
 				state.loading = true;
