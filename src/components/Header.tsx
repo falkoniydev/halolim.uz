@@ -40,10 +40,12 @@ const Header = () => {
 		}
 
 		// Loaderni boshlash - ma'lumot yuklanayotganini ko'rsatish
-		if (loading) {
-			(loaderRef.current as any).continuousStart();
-		} else {
-			(loaderRef.current as any).complete();
+		if (loaderRef.current) {
+			if (loading) {
+				(loaderRef.current as any).continuousStart();
+			} else {
+				(loaderRef.current as any).complete();
+			}
 		}
 	}, [dispatch, loading]);
 

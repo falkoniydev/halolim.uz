@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { FaShieldAlt, FaSearch, FaUsers } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 // Animatsiya sozlamalari
 const fadeInUp = {
@@ -42,7 +43,7 @@ const Home = () => {
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
 				>
-					Join Now
+					<Link to={"/login"}>Join Now</Link>
 				</motion.button>
 			</div>
 
@@ -139,9 +140,12 @@ const Home = () => {
 				<p className="text-lg mb-8 text-white">
 					Sign up now and start your journey to find your perfect match!
 				</p>
-				<button className="bg-white text-pink-500 px-6 py-3 rounded-full font-bold hover:bg-pink-600 hover:text-white transition-all">
+				<Link
+					to={"/register"}
+					className="bg-white text-pink-500 px-6 py-3 rounded-full font-bold hover:bg-pink-600 hover:text-white transition-all"
+				>
 					Sign Up Now
-				</button>
+				</Link>
 			</motion.div>
 		</div>
 	);

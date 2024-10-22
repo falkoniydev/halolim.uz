@@ -20,7 +20,11 @@ const Login = () => {
 		dispatch(loginUser(values));
 		// Yuklanish jarayonini ko'rsatish
 		if (loaderRef.current) {
-			loaderRef.current.continuousStart();
+			if (loading) {
+				(loaderRef.current as any).continuousStart();
+			} else {
+				(loaderRef.current as any).complete();
+			}
 		}
 	};
 
@@ -30,7 +34,7 @@ const Login = () => {
 			if (loaderRef.current) {
 				loaderRef.current.complete(); // Loaderni to'xtatish
 			}
-			navigate("/");
+			navigate("/matches");
 		}
 	}, [isAuthenticated, navigate]);
 
