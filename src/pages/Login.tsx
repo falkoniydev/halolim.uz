@@ -21,7 +21,7 @@ const Login = () => {
 		// Yuklanish jarayonini ko'rsatish
 		if (loaderRef.current) {
 			if (loading) {
-				(loaderRef.current as any).continuousStart();
+				(loaderRef.current as any)?.continuousStart();
 			} else {
 				(loaderRef.current as any).complete();
 			}
