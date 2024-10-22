@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
 import axios from "axios";
+import { toast } from "react-toastify";
 
-// Login API so'rovini boshqarish uchun async thunk
+// Login API request
 export const loginUser = createAsyncThunk(
 	"auth/loginUser",
 	async (credentials: { username: string; password: string }, thunkAPI) => {
@@ -15,11 +15,11 @@ export const loginUser = createAsyncThunk(
 				}
 			);
 			const data = response.data;
-			// Tokenni sessionStorage ga saqlash
 			sessionStorage.setItem("token", data.data.jwtToken);
 			sessionStorage.setItem("username", data.data.username);
 			return data.data;
 		} catch (error: any) {
+			toast.error(error.response?.data?.message || "Login failed");
 			return thunkAPI.rejectWithValue("Login failed");
 		}
 	}
@@ -30,12 +30,10 @@ const initialState = {
 	user: {
 		username: "",
 		profilePic: "",
-	} as {
-		username: string;
-		profilePic: string;
 	},
 	loading: false,
 	error: "",
+	successMessage: "", // Yana bir state: muvaffaqiyatli xabarlar
 };
 
 const authSlice = createSlice({
@@ -49,7 +47,6 @@ const authSlice = createSlice({
 			sessionStorage.removeItem("username");
 			sessionStorage.removeItem("profilePic");
 		},
-		// Yangi action: sessionStorage'dan userni yuklash
 		loadUserFromSession: (state, action) => {
 			state.isAuthenticated = true;
 			state.user = {
@@ -79,6 +76,5 @@ const authSlice = createSlice({
 	},
 });
 
-// Faqat logoutni eksport qilish kerak
 export const { logout, loadUserFromSession } = authSlice.actions;
 export default authSlice.reducer;

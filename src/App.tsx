@@ -19,6 +19,7 @@ import ForgetPassword from "./pages/ForgetPassword";
 import Settings from "./pages/Settings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
 	return (
@@ -60,6 +61,10 @@ const App = () => {
 					<Route
 						path="/forgot-password"
 						element={<ForgetPassword />}
+					/>
+					<Route
+						path="/reset_password"
+						element={<ResetPassword />}
 					/>
 					<Route
 						path="/search"

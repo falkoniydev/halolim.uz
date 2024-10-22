@@ -1,108 +1,92 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Flex } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios"; // Axios import qilindi
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"; // Top-loader import qilindi
 import { toast } from "react-toastify";
+import axios from "axios"; // Axiosni import qiling
 
 const ForgetPassword = () => {
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
 	const navigate = useNavigate();
+	const loaderRef = useRef<LoadingBarRef | null>(null); // Loading bar uchun ref
 
-	const onFinish = async (values: any) => {
-		console.log("Received values of form: ", values);
-		setLoading(true);
-		setError(""); // Xato xabarni o'chirish
+	const onFinish = async (values: { email: string }) => {
+		loaderRef.current?.continuousStart(); // Loaderni boshlash
 
 		try {
-			// API ga POST so'rovni axios bilan jo'natish
 			const response = await axios.post(
-				"http://13.50.240.41:8080/datingapp/api/v1/auth/authenticate",
-				{
-					username: values.username,
-					password: values.password,
-				}
+				`https://13.50.240.41/datingapp/api/v1/auth/forgot-password?email=${values.email}  ` // Emailni yuborish,
 			);
 
-			console.log(response);
-
 			if (response.status === 200) {
-				const data = response.data;
-				console.log("Server Response:", data);
-
-				// Tokenni localStorage ga saqlash
-				localStorage.setItem("token", data.data.token);
-				localStorage.setItem("username", data.data.username);
-
-				// Home sahifasiga o'tkazish
-				navigate("/");
+				toast.success(
+					response.data.messageDetail ||
+						"Email sent successfully! Please check your inbox."
+				);
+				navigate("/login"); // Successful recovery, redirect to login
+			} else {
+				toast.error(response.data.messageDetail || "Failed to send email.");
 			}
 		} catch (error: any) {
-			if (error.response && error.response.status === 403) {
-				setError(
-					"Forbidden: You do not have permission to access this resource."
-				);
-			} else {
-				setError("Invalid credentials. Please try again.");
-			}
+			toast.error(
+				error.response?.data?.messageDetail ||
+					"An error occurred. Please try again."
+			);
 		} finally {
-			setLoading(false); // Yuklanishni to'xtatish
-			toast.success("Successfully logged in!");
+			loaderRef.current?.complete(); // Loaderni to'xtatish
 		}
 	};
 
 	return (
-		<div className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[400px] py-10 mt-16">
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.8 }}
+			className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[400px] py-10 mt-16"
+		>
+			{/* Top-loader */}
+			<LoadingBar
+				color="#f11946"
+				ref={loaderRef}
+			/>
+
 			<Form
-				name="login"
-				initialValues={{ remember: true }}
+				name="forget-password"
 				style={{ maxWidth: 300, width: "100%" }}
 				onFinish={onFinish}
 			>
-				<h2 className="text-center text-2xl mb-4 text-white">Forgot your password</h2>
-				{error && <p className="text-red-500 text-center">{error}</p>}
+				<h2 className="text-center text-2xl mb-4 text-white">
+					Forget Password
+				</h2>
 
 				<Form.Item
-					name="username"
-					rules={[{ required: true, message: "Please input your Username!" }]}
+					name="email"
+					rules={[
+						{
+							required: true,
+							message: "Please input your Email!",
+						},
+						{
+							type: "email",
+							message: "The input is not a valid E-mail!",
+						},
+					]}
 				>
 					<Input
-						prefix={<UserOutlined />}
-						placeholder="Username"
-					/>
-				</Form.Item>
-
-				<Form.Item
-					name="password"
-					rules={[{ required: true, message: "Please input your Password!" }]}
-				>
-					<Input
-						prefix={<LockOutlined />}
-						type="password"
-						placeholder="Password"
+						prefix={<MailOutlined />}
+						placeholder="email"
 					/>
 				</Form.Item>
 
 				<Form.Item>
-					<Flex
-						justify="space-between"
-						align="center"
+					<Checkbox className="text-white">Remember me</Checkbox>
+					<a
+						href="/login"
+						className="text-white float-right"
 					>
-						<Form.Item
-							name="remember"
-							valuePropName="checked"
-							noStyle
-						>
-							<Checkbox className="text-white">Remember me</Checkbox>
-						</Form.Item>
-						<a
-							href="/forgot-password"
-							className="text-white"
-						>
-							Forgot password?
-						</a>
-					</Flex>
+						Back to Login
+					</a>
 				</Form.Item>
 
 				<Form.Item>
@@ -110,16 +94,12 @@ const ForgetPassword = () => {
 						block
 						type="primary"
 						htmlType="submit"
-						loading={loading}
 					>
-						Log in
+						Send Reset Link
 					</Button>
-					<div className="text-center mt-2 text-white">
-						or <a href="/register">Register now!</a>
-					</div>
 				</Form.Item>
 			</Form>
-		</div>
+		</motion.div>
 	);
 };
 
