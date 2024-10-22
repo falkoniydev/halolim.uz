@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"; // Top-loader import
+import { AiOutlineClose } from "react-icons/ai";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -121,6 +122,14 @@ const Login = () => {
 					</div>
 				</Form.Item>
 			</Form>
+
+			{/* Close Button */}
+			<button
+				className="absolute top-10 right-10 text-[36px] text-white"
+				onClick={() => navigate("/")} // Close buttonni bosganda login sahifasiga o'tish
+			>
+				<AiOutlineClose />
+			</button>
 		</motion.div>
 	);
 };

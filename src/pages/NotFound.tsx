@@ -3,7 +3,13 @@ import { FaHeartBroken } from "react-icons/fa";
 
 const NotFound = () => {
 	return (
-		<div className="min-h-screen bg-pink-50 flex flex-col justify-center items-center text-center px-4">
+		<div
+			className="min-h-screen bg-pink-50 flex flex-col justify-center items-center text-center px-4"
+			style={{
+				paddingTop: "0 important",
+				marginTop: "0 important",
+			}}
+		>
 			{/* Broken Heart Icon */}
 			<FaHeartBroken className="text-pink-500 text-[120px] animate-pulse" />
 

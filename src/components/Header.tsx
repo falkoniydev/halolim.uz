@@ -83,6 +83,9 @@ const Header = () => {
 		"/login",
 		"/register",
 		"/forgot-password",
+		"/reset_password",
+		"/reminder-for-verification",
+		"*",
 	].includes(location.pathname);
 
 	if (shouldHideHeaderFooter) {
@@ -156,64 +159,66 @@ const Header = () => {
 					</Link>
 
 					{/* Desktop Navigation */}
-					<nav className="hidden md:flex items-center gap-5 text-[18px] font-black">
-						<ul
-							className={`flex items-center gap-5 ${
-								isScrolled ? "text-white" : "text-yellow-500"
-							}`}
-						>
-							<li>
-								<Link
-									to="/online"
-									className={
-										location.pathname === "/online" ? "text-red-500" : ""
-									}
-								>
-									Online
-								</Link>
-							</li>
-							<li>
-								<Link
-									to="/matches"
-									className={
-										location.pathname === "/matches" ? "text-red-500" : ""
-									}
-								>
-									Matches
-								</Link>
-							</li>
-							<li>
-								<Link
-									to="/search"
-									className={
-										location.pathname === "/search" ? "text-red-500" : ""
-									}
-								>
-									Search
-								</Link>
-							</li>
-							<li>
-								<Link
-									to="/message"
-									className={
-										location.pathname === "/message" ? "text-red-500" : ""
-									}
-								>
-									Message
-								</Link>
-							</li>
-							<li>
-								<Link
-									to="/activity"
-									className={
-										location.pathname === "/activity" ? "text-red-500" : ""
-									}
-								>
-									Activity
-								</Link>
-							</li>
-						</ul>
-					</nav>
+					{isAuthenticated && (
+						<nav className="hidden md:flex items-center gap-5 text-[18px] font-black">
+							<ul
+								className={`flex items-center gap-5 ${
+									isScrolled ? "text-white" : "text-yellow-500"
+								}`}
+							>
+								<li>
+									<Link
+										to="/online"
+										className={
+											location.pathname === "/online" ? "text-red-500" : ""
+										}
+									>
+										Online
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/matches"
+										className={
+											location.pathname === "/matches" ? "text-red-500" : ""
+										}
+									>
+										Matches
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/search"
+										className={
+											location.pathname === "/search" ? "text-red-500" : ""
+										}
+									>
+										Search
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/message"
+										className={
+											location.pathname === "/message" ? "text-red-500" : ""
+										}
+									>
+										Message
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/activity"
+										className={
+											location.pathname === "/activity" ? "text-red-500" : ""
+										}
+									>
+										Activity
+									</Link>
+								</li>
+							</ul>
+						</nav>
+					)}
 
 					{/* Profile or Login/Register on Desktop */}
 					{isAuthenticated ? (
@@ -251,16 +256,16 @@ const Header = () => {
 							</a>
 						</Dropdown>
 					) : (
-						<div className="hidden md:flex gap-2">
+						<div className="hidden md:flex gap-6">
 							<Link
 								to="/login"
-								className="text-[18px] text-white font-bold"
+								className="text-[18px] text-white font-bold hover:text-red-500 transition-all"
 							>
 								Login
 							</Link>
 							<Link
 								to="/register"
-								className="text-[18px] text-white font-bold"
+								className="text-[18px] text-white font-bold hover:text-red-500 transition-all"
 							>
 								Register
 							</Link>

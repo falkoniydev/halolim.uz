@@ -38,13 +38,15 @@ const Home = () => {
 				>
 					Join us and start discovering meaningful connections today.
 				</motion.p>
-				<motion.button
-					className="bg-white text-pink-500 px-6 py-3 rounded-full font-bold hover:bg-pink-600 hover:text-white transition-all"
-					whileHover={{ scale: 1.05 }}
-					whileTap={{ scale: 0.95 }}
-				>
-					<Link to={"/login"}>Join Now</Link>
-				</motion.button>
+				<Link to={"/login"}>
+					<motion.button
+						className="bg-white text-pink-500 px-6 py-3 rounded-full font-bold hover:bg-pink-600 hover:text-white transition-all"
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+					>
+						Join Now
+					</motion.button>
+				</Link>
 			</div>
 
 			{/* Key Features */}

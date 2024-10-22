@@ -1,14 +1,21 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const Footer = () => {
 	const location = useLocation();
+
+	const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
 	// Hide Footer on login, register, and forgot-password pages
 	const shouldHideHeaderFooter = [
 		"/login",
 		"/register",
 		"/forgot-password",
+		"/reset_password",
+		"/reminder-for-verification",
+		"*",
 	].includes(location.pathname);
 
 	if (shouldHideHeaderFooter) {
@@ -40,7 +47,7 @@ const Footer = () => {
 							<ul className="flex flex-col md:flex-row items-center gap-5">
 								<li>
 									<Link
-										to={"/online"}
+										to={isAuthenticated ? "/online" : "/login"}
 										className={
 											location.pathname === "/online" ? "text-red-500" : ""
 										}
@@ -50,7 +57,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to={"/matches"}
+										to={isAuthenticated ? "/matches" : "/login"}
 										className={
 											location.pathname === "/matches" ? "text-red-500" : ""
 										}
@@ -60,7 +67,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to={"/search"}
+										to={isAuthenticated ? "/search" : "/login"}
 										className={
 											location.pathname === "/search" ? "text-red-500" : ""
 										}
@@ -70,7 +77,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to={"/message"}
+										to={isAuthenticated ? "/message" : "/login"}
 										className={
 											location.pathname === "/message" ? "text-red-500" : ""
 										}
@@ -80,7 +87,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to={"/activity"}
+										to={isAuthenticated ? "/activity" : "/login"}
 										className={
 											location.pathname === "/activity" ? "text-red-500" : ""
 										}
@@ -90,7 +97,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to={"/terms-and-conditions"}
+										to={isAuthenticated ? "/terms-and-conditions" : "/login"}
 										className={
 											location.pathname === "/terms-and-conditions"
 												? "text-red-500"
@@ -102,7 +109,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to={"/privacy-policy"}
+										to={isAuthenticated ? "private-policy" : "/login"}
 										className={
 											location.pathname === "/privacy-policy"
 												? "text-red-500"

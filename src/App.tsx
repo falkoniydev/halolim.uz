@@ -15,11 +15,14 @@ import Online from "./pages/Online";
 import Search from "./pages/Search";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ForgetPassword from "./pages/ForgetPassword";
 import Settings from "./pages/Settings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import Verify from "./pages/Verify";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ReminderForVerification from "./pages/ReminderForVer";
 
 const App = () => {
 	return (
@@ -32,23 +35,43 @@ const App = () => {
 					/>
 					<Route
 						path="/profile"
-						element={<Profile />}
+						element={
+							<ProtectedRoute>
+								<Profile />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/activity"
-						element={<Activity />}
+						element={
+							<ProtectedRoute>
+								<Activity />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/matches"
-						element={<Matches />}
+						element={
+							<ProtectedRoute>
+								<Matches />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/message"
-						element={<Message />}
+						element={
+							<ProtectedRoute>
+								<Message />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/online"
-						element={<Online />}
+						element={
+							<ProtectedRoute>
+								<Online />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/login"
@@ -59,28 +82,52 @@ const App = () => {
 						element={<Register />}
 					/>
 					<Route
-						path="/forgot-password"
-						element={<ForgetPassword />}
+						path="/verify/:token"
+						element={<Verify />}
 					/>
 					<Route
-						path="/reset_password"
+						path="/reminder-for-verification"
+						element={<ReminderForVerification />}
+					/>
+					<Route
+						path="/forgot-password"
+						element={<ForgotPassword />}
+					/>
+					<Route
+						path="/reset_password/:token"
 						element={<ResetPassword />}
 					/>
 					<Route
 						path="/search"
-						element={<Search />}
+						element={
+							<ProtectedRoute>
+								<Search />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/settings"
-						element={<Settings />}
+						element={
+							<ProtectedRoute>
+								<Settings />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/privacy-policy"
-						element={<PrivacyPolicy />}
+						element={
+							<ProtectedRoute>
+								<PrivacyPolicy />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="/terms-and-conditions"
-						element={<TermsAndConditions />}
+						element={
+							<ProtectedRoute>
+								<TermsAndConditions />
+							</ProtectedRoute>
+						}
 					/>
 					<Route
 						path="*"

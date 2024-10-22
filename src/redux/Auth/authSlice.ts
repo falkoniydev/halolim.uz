@@ -25,8 +25,26 @@ export const loginUser = createAsyncThunk(
 	}
 );
 
+// Tokenni yangilash uchun thunk
+export const refreshToken = createAsyncThunk("auth/refreshToken", async () => {
+	const token = sessionStorage.getItem("token"); // Yoki localStorage.getItem("token")
+
+	const response = await axios.post(
+		`https://your-api-url/api/v1/token/refresh_token`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`, // Tokenni headerda yuborish
+			},
+		}
+	);
+
+	return response.data;
+});
+
 const initialState = {
 	isAuthenticated: false,
+
 	user: {
 		username: "",
 		profilePic: "",

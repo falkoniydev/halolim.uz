@@ -3,20 +3,23 @@ import { Button, Form, Input, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useRef } from "react";
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"; // Top-loader import qilindi
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { toast } from "react-toastify";
-import axios from "axios"; // Axiosni import qiling
+import axios from "axios";
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
 	const navigate = useNavigate();
-	const loaderRef = useRef<LoadingBarRef | null>(null); // Loading bar uchun ref
+	const loaderRef = useRef<LoadingBarRef | null>(null);
 
 	const onFinish = async (values: { email: string }) => {
-		loaderRef.current?.continuousStart(); // Loaderni boshlash
+		console.log("Entered Email:", values.email); // Kiritilgan emailni konsolga chiqarish
+		loaderRef.current?.continuousStart();
 
 		try {
 			const response = await axios.post(
-				`https://13.50.240.41/datingapp/api/v1/auth/forgot-password?email=${values.email}  ` // Emailni yuborish,
+				"https://13.50.240.41/datingapp/api/v1/auth/forgot-password",
+				{ email: values.email },
+				{ headers: { "Content-Type": "application/json" } } // JSON formatida yuborish
 			);
 
 			if (response.status === 200) {
@@ -24,17 +27,18 @@ const ForgetPassword = () => {
 					response.data.messageDetail ||
 						"Email sent successfully! Please check your inbox."
 				);
-				navigate("/login"); // Successful recovery, redirect to login
+				navigate("/login");
 			} else {
 				toast.error(response.data.messageDetail || "Failed to send email.");
 			}
 		} catch (error: any) {
+			console.error("Error details:", error.response);
 			toast.error(
 				error.response?.data?.messageDetail ||
 					"An error occurred. Please try again."
 			);
 		} finally {
-			loaderRef.current?.complete(); // Loaderni to'xtatish
+			loaderRef.current?.complete();
 		}
 	};
 
@@ -45,7 +49,6 @@ const ForgetPassword = () => {
 			transition={{ duration: 0.8 }}
 			className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[400px] py-10 mt-16"
 		>
-			{/* Top-loader */}
 			<LoadingBar
 				color="#f11946"
 				ref={loaderRef}
@@ -103,4 +106,4 @@ const ForgetPassword = () => {
 	);
 };
 
-export default ForgetPassword;
+export default ForgotPassword;

@@ -1,68 +1,17 @@
-import React from "react";
-// import type { CascaderProps } from "antd";
-import {
-	// AutoComplete,
-	Button,
-	// Cascader,
-	Checkbox,
-	// Col,
-	Form,
-	Input,
-	InputNumber,
-	// Row,
-	Select,
-} from "antd";
-import type { InputNumberProps } from "antd";
+import React, { useRef } from "react";
+import { Button, Checkbox, Form, Input, Select } from "antd";
+import type { InputProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { LoadingBarRef } from "react-top-loading-bar";
 
-const onChange: InputNumberProps["onChange"] = (value) => {
+const onChange: InputProps["onChange"] = (value) => {
 	console.log("changed", value);
 };
 
 const { Option } = Select;
-
-// interface DataNodeType {
-// 	value: string;
-// 	label: string;
-// 	children?: DataNodeType[];
-// }
-
-// const residences: CascaderProps<DataNodeType>["options"] = [
-// 	{
-// 		value: "zhejiang",
-// 		label: "Zhejiang",
-// 		children: [
-// 			{
-// 				value: "hangzhou",
-// 				label: "Hangzhou",
-// 				children: [
-// 					{
-// 						value: "xihu",
-// 						label: "West Lake",
-// 					},
-// 				],
-// 			},
-// 		],
-// 	},
-// 	{
-// 		value: "jiangsu",
-// 		label: "Jiangsu",
-// 		children: [
-// 			{
-// 				value: "nanjing",
-// 				label: "Nanjing",
-// 				children: [
-// 					{
-// 						value: "zhonghuamen",
-// 						label: "Zhong Hua Men",
-// 					},
-// 				],
-// 			},
-// 		],
-// 	},
-// ];
 
 const formItemLayout = {
 	labelCol: {
@@ -92,11 +41,47 @@ const Register: React.FC = () => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 
-	const onFinish = (values: any) => {
-		console.log("Received values of form: ", values);
-		navigate("/login");
-		form.resetFields();
-		toast.success("Congratulations, you have successfully registered!");
+	const loaderRef = useRef<LoadingBarRef | null>(null);
+
+	const onFinish = async (values: any) => {
+		console.log(values);
+		loaderRef.current?.continuousStart();
+
+		try {
+			const response = await axios.post(
+				"https://13.50.240.41/datingapp/api/v1/auth/register",
+				{
+					email: values.email,
+					password: values.password,
+					confirmPassword: values.confirmPassword,
+					registerUserInfoDTO: {
+						firstName: values.firstName,
+						lastName: values.lastName,
+						gender: values.gender,
+						lookingGender: values.lookingGender,
+						age: values.age,
+					},
+				},
+				{ headers: { "Content-Type": "application/json" } } // JSON formatida yuborish
+			);
+
+			if (response.status === 200) {
+				toast.success(
+					"You have successfully registered. Please check your email to verify your account."
+				);
+				navigate("/reminder-for-verification");
+			} else {
+				toast.error(response.data.messageDetail || "Registration failed.");
+			}
+		} catch (error: any) {
+			console.log(error.response);
+			toast.error(
+				error.response?.data?.messageDetail ||
+					"An error occurred. Please try again."
+			);
+		} finally {
+			loaderRef.current?.complete();
+		}
 	};
 
 	return (
@@ -104,7 +89,10 @@ const Register: React.FC = () => {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.8 }}
-			className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[500px] px-10 "
+			style={{
+				marginTop: "-50px",
+			}}
+			className="bg-slate-900 rounded-lg shadow-lg bg-opacity-80 mx-auto flex items-center justify-center w-[500px] px-10"
 		>
 			<Form
 				{...formItemLayout}
@@ -127,7 +115,15 @@ const Register: React.FC = () => {
 				</h1>
 				<Form.Item
 					name="email"
-					label={<span style={{ color: "white" }}>Email</span>}
+					label={
+						<span
+							style={{
+								color: "white",
+							}}
+						>
+							Email
+						</span>
+					}
 					rules={[
 						{
 							type: "email",
@@ -173,7 +169,7 @@ const Register: React.FC = () => {
 				</Form.Item>
 
 				<Form.Item
-					name="confirm"
+					name="confirmPassword"
 					label={<span style={{ color: "white" }}>Confirm password</span>}
 					tooltip="Letters, numbers and at least one special characters must be entered"
 					dependencies={["password"]}
@@ -197,7 +193,7 @@ const Register: React.FC = () => {
 				</Form.Item>
 
 				<Form.Item
-					name="firstname"
+					name="firstName"
 					label={<span style={{ color: "white" }}>Firstname</span>}
 					rules={[
 						{
@@ -211,7 +207,7 @@ const Register: React.FC = () => {
 				</Form.Item>
 
 				<Form.Item
-					name="lastname"
+					name="lastName"
 					label={<span style={{ color: "white" }}>Lastname</span>}
 					rules={[
 						{
@@ -231,19 +227,29 @@ const Register: React.FC = () => {
 						{
 							required: true,
 							validator(_, value) {
-								if (!value) {
-									return Promise.reject(new Error("Please input your age!"));
+								if (!value || value < 16 || value > 150) {
+									if (value > 150) {
+										return Promise.reject(
+											new Error("Please input less than 150 years old!")
+										);
+									} else if (value < 16) {
+										return Promise.reject(
+											new Error("Please input more than 16 years old!")
+										);
+									}
 								}
 								return Promise.resolve();
 							},
 						},
 					]}
 				>
-					<InputNumber
-						min={16}
-						max={100}
+					<Input
+						type="number"
 						placeholder="18 years old"
-						onChange={onChange}
+						// defaultValue={16} // Default qiymat 16
+						min={16} // 16 dan past son kiritish mumkin emas
+						max={150}
+						onChange={onChange} // Agar onChange metodini qo'shmoqchi bo'lsangiz
 					/>
 				</Form.Item>
 
@@ -254,6 +260,19 @@ const Register: React.FC = () => {
 					style={{ color: "red" }}
 				>
 					<Select placeholder="select your gender">
+						<Option value="MALE">MALE</Option>
+						<Option value="FEMALE">FEMALE</Option>
+						<Option value="OTHER">OTHER</Option>
+					</Select>
+				</Form.Item>
+
+				<Form.Item
+					name="lookingGender"
+					label={<span style={{ color: "white" }}>Gender you seek</span>}
+					rules={[{ required: true, message: "Please select gender!" }]}
+					style={{ color: "red" }}
+				>
+					<Select placeholder="select gender you look for">
 						<Option value="MALE">MALE</Option>
 						<Option value="FEMALE">FEMALE</Option>
 						<Option value="OTHER">OTHER</Option>

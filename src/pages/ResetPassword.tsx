@@ -58,7 +58,9 @@ const ResetPassword = () => {
 
 				<Form.Item
 					name="newPassword"
-					rules={[{ required: true, message: "Please input your new password!" }]}
+					rules={[
+						{ required: true, message: "Please input your new password!" },
+					]}
 				>
 					<Input
 						prefix={<LockOutlined />}
@@ -69,7 +71,9 @@ const ResetPassword = () => {
 
 				<Form.Item
 					name="confirmPassword"
-					rules={[{ required: true, message: "Please confirm your new password!" }]}
+					rules={[
+						{ required: true, message: "Please confirm your new password!" },
+					]}
 				>
 					<Input
 						prefix={<LockOutlined />}
