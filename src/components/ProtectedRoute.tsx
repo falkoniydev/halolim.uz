@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { refreshToken } from "../redux/Auth/authSlice"; // refreshToken action'ini import qiling
+// import { refreshToken } from "../redux/Auth/authSlice"; // refreshToken action'ini import qiling
 
 interface ProtectedRouteProps {
 	children: React.ReactNode; // Children sifatida komponent
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 	// const navigate = useNavigate();
 	const isAuthenticated = useSelector(
 		(state: RootState) => state.auth.isAuthenticated
 	);
 
-	useEffect(() => {
-		// Agar foydalanuvchi authentikatsiya qilinmagan bo'lsa, refresh token chaqirish
-		if (!isAuthenticated) {
-			dispatch(refreshToken() as any); // Tokenni yangilash
-		}
-	}, [isAuthenticated, dispatch]);
+	// useEffect(() => {
+	// 	// Agar foydalanuvchi authentikatsiya qilinmagan bo'lsa, refresh token chaqirish
+	// 	if (!isAuthenticated) {
+	// 		dispatch(refreshToken() as any); // Tokenni yangilash
+	// 	}
+	// }, [isAuthenticated, dispatch]);
 
 	// useEffect(() => {
 	// 	if (!isAuthenticated) {
