@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { LoadingBarRef } from "react-top-loading-bar";
+import { AiOutlineClose } from "react-icons/ai";
 
 const onChange: InputProps["onChange"] = (value) => {
 	console.log("changed", value);
@@ -312,6 +313,14 @@ const Register: React.FC = () => {
 					if you have already registered, go to Login
 				</Button>
 			</Form>
+
+			{/* Close Button */}
+			<button
+				className="absolute top-10 right-10 text-[36px] text-white"
+				onClick={() => navigate("/")} // Close buttonni bosganda login sahifasiga o'tish
+			>
+				<AiOutlineClose />
+			</button>
 		</motion.div>
 	);
 };

@@ -4,6 +4,7 @@ import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { AiOutlineClose } from "react-icons/ai";
 
 const ResetPassword = () => {
 	const navigate = useNavigate();
@@ -92,6 +93,14 @@ const ResetPassword = () => {
 					</Button>
 				</Form.Item>
 			</Form>
+
+			{/* Close Button */}
+			<button
+				className="absolute top-10 right-10 text-[36px] text-white"
+				onClick={() => navigate("/")} // Close buttonni bosganda login sahifasiga o'tish
+			>
+				<AiOutlineClose />
+			</button>
 		</motion.div>
 	);
 };

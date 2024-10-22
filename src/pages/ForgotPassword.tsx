@@ -6,6 +6,7 @@ import { useRef } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { AiOutlineClose } from "react-icons/ai";
 
 const ForgotPassword = () => {
 	const navigate = useNavigate();
@@ -17,9 +18,14 @@ const ForgotPassword = () => {
 
 		try {
 			const response = await axios.post(
-				"https://13.50.240.41/datingapp/api/v1/auth/forgot-password",
-				{ email: values.email },
-				{ headers: { "Content-Type": "application/json" } } // JSON formatida yuborish
+				`https://13.50.240.41/datingapp/api/v1/auth/forgot-password?email=${values.email}`
+				// { email: values.email },
+				// {
+				// 	body: JSON.stringify({ email: values.email }), // JSON formatida yuborish
+				// },
+				// {
+				// 	headers: { "Content-Type": "application/json" },
+				// } // JSON formatida yuborish
 			);
 
 			if (response.status === 200) {
@@ -102,6 +108,14 @@ const ForgotPassword = () => {
 					</Button>
 				</Form.Item>
 			</Form>
+
+			{/* Close Button */}
+			<button
+				className="absolute top-10 right-10 text-[36px] text-white"
+				onClick={() => navigate("/")} // Close buttonni bosganda login sahifasiga o'tish
+			>
+				<AiOutlineClose />
+			</button>
 		</motion.div>
 	);
 };
