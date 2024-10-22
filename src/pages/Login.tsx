@@ -6,7 +6,7 @@ import { loginUser } from "../redux/Auth/authSlice";
 import { AppDispatch, RootState } from "../redux/store";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"; // Top-loader import qilindi
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"; // Top-loader import
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -17,14 +17,12 @@ const Login = () => {
 	const loaderRef = useRef<LoadingBarRef | null>(null); // Loading bar uchun ref
 
 	const onFinish = (values: any) => {
+		// Login jarayonini boshlash
 		dispatch(loginUser(values));
+
 		// Yuklanish jarayonini ko'rsatish
 		if (loaderRef.current) {
-			if (loading) {
-				(loaderRef.current as any)?.continuousStart();
-			} else {
-				(loaderRef.current as any).complete();
-			}
+			loaderRef.current.continuousStart();
 		}
 	};
 
@@ -34,9 +32,16 @@ const Login = () => {
 			if (loaderRef.current) {
 				loaderRef.current.complete(); // Loaderni to'xtatish
 			}
-			navigate("/matches");
+			navigate("/matches"); // Foydalanuvchini yo'naltirish
 		}
 	}, [isAuthenticated, navigate]);
+
+	// Agar login jarayoni to'xtasa yoki xatolik yuz bersa, loaderni to'xtatish
+	useEffect(() => {
+		if (!loading && loaderRef.current) {
+			loaderRef.current.complete();
+		}
+	}, [loading]);
 
 	return (
 		<motion.div

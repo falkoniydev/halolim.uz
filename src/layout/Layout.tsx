@@ -9,17 +9,12 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
 	return (
 		<div
+			className="min-h-screen overflow-hidden bg-cover bg-center bg-fixed"
 			style={{
 				backgroundImage: `url("./bg-hero3.avif")`,
-				backgroundRepeat: "no-repeat",
 				backgroundBlendMode: "multiply",
-				backgroundAttachment: "fixed",
-				backgroundClip: "border-box",
-				overflow: "hidden",
-				backgroundSize: "cover",
-				backgroundPosition: "center",
-				minHeight: "100vh",
 			}}
+			role="main"
 		>
 			<Header />
 			<main

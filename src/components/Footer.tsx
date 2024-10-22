@@ -39,25 +39,78 @@ const Footer = () => {
 						<nav className="text-[16px] font-medium">
 							<ul className="flex flex-col md:flex-row items-center gap-5">
 								<li>
-									<Link to={"/online"}>Online</Link>
+									<Link
+										to={"/online"}
+										className={
+											location.pathname === "/online" ? "text-red-500" : ""
+										}
+									>
+										Online
+									</Link>
 								</li>
 								<li>
-									<Link to={"/matches"}>Matches</Link>
+									<Link
+										to={"/matches"}
+										className={
+											location.pathname === "/matches" ? "text-red-500" : ""
+										}
+									>
+										Matches
+									</Link>
 								</li>
 								<li>
-									<Link to={"/search"}>Search</Link>
+									<Link
+										to={"/search"}
+										className={
+											location.pathname === "/search" ? "text-red-500" : ""
+										}
+									>
+										Search
+									</Link>
 								</li>
 								<li>
-									<Link to={"/message"}>Message</Link>
+									<Link
+										to={"/message"}
+										className={
+											location.pathname === "/message" ? "text-red-500" : ""
+										}
+									>
+										Message
+									</Link>
 								</li>
 								<li>
-									<Link to={"/activity"}>Activity</Link>
+									<Link
+										to={"/activity"}
+										className={
+											location.pathname === "/activity" ? "text-red-500" : ""
+										}
+									>
+										Activity
+									</Link>
 								</li>
 								<li>
-									<Link to={"/terms-and-conditions"}>Terms & Conditions</Link>
+									<Link
+										to={"/terms-and-conditions"}
+										className={
+											location.pathname === "/terms-and-conditions"
+												? "text-red-500"
+												: ""
+										}
+									>
+										Terms & Conditions
+									</Link>
 								</li>
 								<li>
-									<Link to={"/privacy-policy"}>Privacy Policy</Link>
+									<Link
+										to={"/privacy-policy"}
+										className={
+											location.pathname === "/privacy-policy"
+												? "text-red-500"
+												: ""
+										}
+									>
+										Privacy Policy
+									</Link>
 								</li>
 							</ul>
 						</nav>
@@ -70,6 +123,7 @@ const Footer = () => {
 							target="_blank"
 							rel="noopener noreferrer"
 							className="hover:text-pink-500 transition duration-300"
+							aria-label="Instagram"
 						>
 							<FaInstagram />
 						</a>
@@ -78,6 +132,7 @@ const Footer = () => {
 							target="_blank"
 							rel="noopener noreferrer"
 							className="hover:text-blue-600 transition duration-300"
+							aria-label="Facebook"
 						>
 							<FaFacebook />
 						</a>
@@ -86,6 +141,7 @@ const Footer = () => {
 							target="_blank"
 							rel="noopener noreferrer"
 							className="hover:text-blue-400 transition duration-300"
+							aria-label="Twitter"
 						>
 							<FaTwitter />
 						</a>
@@ -94,6 +150,7 @@ const Footer = () => {
 							target="_blank"
 							rel="noopener noreferrer"
 							className="hover:text-blue-700 transition duration-300"
+							aria-label="LinkedIn"
 						>
 							<FaLinkedin />
 						</a>

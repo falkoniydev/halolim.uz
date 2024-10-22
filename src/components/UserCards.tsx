@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -27,35 +27,40 @@ const UserCards = () => {
 		"/profile-card-bg.avif",
 	];
 
-	const toggleLike = () => {
-		setLiked(!liked);
-	};
+	// Toggles for like button and comments modal
+	const toggleLike = useCallback(() => {
+		setLiked((prevLiked) => !prevLiked);
+	}, []);
 
-	const handlePhotos = () => {
+	const handlePhotos = useCallback(() => {
 		setShowPhotos(true);
-	};
+	}, []);
 
-	const closePhotos = () => {
+	const closePhotos = useCallback(() => {
 		setShowPhotos(false);
-	};
+	}, []);
 
-	const handleSubmitComment = () => {
+	const handleSubmitComment = useCallback(() => {
 		if (comment.trim()) {
-			setComments([...comments, comment]);
+			setComments((prevComments) => [...prevComments, comment]);
 			setComment("");
 		}
-	};
+	}, [comment]);
 
-	const handleKeyPress = (e: any) => {
-		if (e.key === "Enter") {
-			handleSubmitComment();
-		}
-	};
+	const handleKeyPress = useCallback(
+		(e: any) => {
+			if (e.key === "Enter") {
+				handleSubmitComment();
+			}
+		},
+		[handleSubmitComment]
+	);
 
-	const toggleCommentsModal = () => {
-		setShowCommentsModal(!showCommentsModal);
-	};
+	const toggleCommentsModal = useCallback(() => {
+		setShowCommentsModal((prevShowCommentsModal) => !prevShowCommentsModal);
+	}, []);
 
+	// Fetch user data on load if authenticated
 	useEffect(() => {
 		if (isAuthenticated) {
 			dispatch(fetchUserData()); // Redux orqali user ma'lumotlarini olish
@@ -74,14 +79,13 @@ const UserCards = () => {
 					alt="Cover"
 					className="w-full h-full object-cover"
 				/>
-				<div>{}</div>
 			</div>
 
 			{/* User section */}
-			<div className=" p-4">
+			<div className="p-4">
 				<div className="flex items-center gap-2">
 					<img
-						src="/couple.jpg"
+						src={data?.data?.profilePic || "/couple.jpg"} // Foydalanuvchi rasmini dinamik yuklash
 						alt="User"
 						className="w-12 h-12 rounded-full object-cover"
 					/>
@@ -94,7 +98,7 @@ const UserCards = () => {
 					)}
 				</div>
 
-				<div className=" mt-3">
+				<div className="mt-3">
 					<p className="text-white">
 						This is a short description about the user.
 					</p>
@@ -103,17 +107,26 @@ const UserCards = () => {
 
 			{/* Buttons with icons */}
 			<div className="flex justify-around border-t p-4">
-				<button onClick={toggleLike}>
+				<button
+					onClick={toggleLike}
+					aria-label="Like"
+				>
 					{liked ? (
 						<FaHeart className="text-red-500 text-2xl" />
 					) : (
 						<FaRegHeart className="text-white text-2xl hover:text-yellow-500 transition-all" />
 					)}
 				</button>
-				<button onClick={toggleCommentsModal}>
+				<button
+					onClick={toggleCommentsModal}
+					aria-label="Comments"
+				>
 					<FaComment className="text-white text-2xl hover:text-yellow-500 transition-all" />
 				</button>
-				<button onClick={handlePhotos}>
+				<button
+					onClick={handlePhotos}
+					aria-label="Photos"
+				>
 					<FaCamera className="text-white text-2xl hover:text-yellow-500 transition-all" />
 				</button>
 			</div>
@@ -184,6 +197,7 @@ const UserCards = () => {
 							value={comment}
 							onChange={(e) => setComment(e.target.value)}
 							onKeyPress={handleKeyPress}
+							aria-label="Write a comment"
 						/>
 						<button
 							onClick={handleSubmitComment}
